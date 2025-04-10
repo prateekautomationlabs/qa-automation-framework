@@ -39,7 +39,7 @@ def get_resolutions():
 def browser_context(request):
     resolution = request.param
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(headless=False)
         context = browser.new_context(
             viewport=resolution,
             ignore_https_errors=True
