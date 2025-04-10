@@ -1,4 +1,4 @@
-name: CI Web Tests
+name: CI Web Tests on PR
 
 on:
   push:
