@@ -1,0 +1,12 @@
+base_url: "https://automationexercise.com/"
+api_base_url: "https://automationexercise.com/api/"
+browser:
+  headless: false
+  timeout: 10000
+db:
+  type: "mysql"
+  host: "localhost"
+  port: 3306
+  user: "admin"
+  password: "admin"
+  name: "qa_db"

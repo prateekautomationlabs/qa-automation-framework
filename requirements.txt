@@ -1,0 +1,7 @@
+pytest
+playwright
+pytest-playwright
+requests
+pytest-html
+pyyaml
+mysql-connector-python  # For MySQL, or change based on DB

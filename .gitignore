@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.log
+.env
+.venv/
+.idea/
+reports/
+screenshots/
+playwright-report/
+*.sqlite3
+*.db
