@@ -1,4 +1,4 @@
-name: CI Web Tests
+name: CI Web Tests on PR
 
 on:
   push:
@@ -26,10 +26,12 @@ jobs:
           pip install -r requirements.txt
           playwright install
 
-      - name: Run web tests
+      - name: Run web tests in headless mode
+        env:
+          HEADLESS: "true"  # Ensure headless mode in CI/CD
         run: |
           source venv/bin/activate
-          pytest tests/web --html=reports/report.html --self-contained-html
+          pytest -n auto tests/web --html=reports/report.html --self-contained-html
 
       - name: Upload HTML Report
         if: success() || failure()

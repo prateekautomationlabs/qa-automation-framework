@@ -17,7 +17,12 @@ class ContactUsPage(BasePage):
         self.page.fill(self.email_input, email)
         self.page.fill(self.subject_input, subject)
         self.page.fill(self.message_input, message)
-        self.page.click(self.submit_btn)
+        #self.page.click(self.submit_btn)
+        submit_button = self.page.locator("[name='submit']")
+        submit_button.wait_for(state="visible")
+        submit_button.scroll_into_view_if_needed()
+        submit_button.click()
+        self.page.once("dialog", lambda dialog: dialog.accept())
 
     def is_success_displayed(self):
         return self.page.is_visible(self.success_msg)

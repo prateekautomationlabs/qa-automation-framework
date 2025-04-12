@@ -19,7 +19,7 @@ def api_client(config):
     return session
 
 # --- Database Fixture ---
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def db_client():
     client = MySQLClient()
     yield client
@@ -35,11 +35,21 @@ def get_resolutions():
         {"width": 414, "height": 896}  # iPhone XR like
     ]
 
+def pytest_addoption(parser):
+    parser.addoption(
+        "--run-headed", action="store_true", default=False, help="Run tests in headed mode"
+    )
+    parser.addoption(
+        "--slow-mo", type=int, default=0, help="Slow down Playwright actions (in ms)"
+    )
+
 @pytest.fixture(params=get_resolutions(), scope="function")
-def browser_context(request):
+def browser_context(request,pytestconfig):
     resolution = request.param
+    headless = not pytestconfig.getoption("--run-headed")  # Use --headed to override
+    slow_mo = pytestconfig.getoption("--slow-mo")
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(headless=headless, slow_mo=slow_mo)
         context = browser.new_context(
             viewport=resolution,
             ignore_https_errors=True
