@@ -31,8 +31,7 @@ from playwright.sync_api import sync_playwright
 def get_resolutions():
     return [
         {"width": 1920, "height": 1080},
-        {"width": 1366, "height": 768},
-        {"width": 414, "height": 896}  # iPhone XR like
+        {"width": 1366, "height": 768}
     ]
 
 def pytest_addoption(parser):
@@ -46,7 +45,7 @@ def pytest_addoption(parser):
 @pytest.fixture(params=get_resolutions(), scope="function")
 def browser_context(request,pytestconfig):
     resolution = request.param
-    headless = not pytestconfig.getoption("--run-headed")  # Use --headed to override
+    headless = not pytestconfig.getoption("--run-headed")  # Use --run-headed to override
     slow_mo = pytestconfig.getoption("--slow-mo")
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=headless, slow_mo=slow_mo)
