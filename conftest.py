@@ -14,7 +14,6 @@ def config():
 @pytest.fixture(scope="session")
 def api_client(config):
     session = requests.Session()
-    session.headers.update({'Content-Type': 'application/json'})
     session.base_url = config['api_base_url']  # Custom attribute
     return session
 
