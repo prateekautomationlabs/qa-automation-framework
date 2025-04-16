@@ -13,10 +13,12 @@ def test_get_all_products(product_api):
     assert response.status_code == 200
     assert "products" in response.json()
 
-def test_search_product_found(product_api):
-    response = product_api.search_product("Tshirt")
+@pytest.mark.parametrize("search_term", ["tshirt", "jeans", "dress"])
+def test_search_product(product_api, search_term):
+    response = product_api.search_product(search_term)
     assert response.status_code == 200
-    assert any("Tshirt" in p["name"] for p in response.json().get("products", []))
+    assert any(search_term.lower() in p["name"].lower() for p in response.json().get("products", []))
+
 
 def test_search_product_not_found(product_api):
     response = product_api.search_product("xyznotfound")

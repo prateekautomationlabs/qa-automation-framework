@@ -40,14 +40,19 @@ def pytest_addoption(parser):
     parser.addoption(
         "--slow-mo", type=int, default=0, help="Slow down Playwright actions (in ms)"
     )
+    parser.addoption(
+        "--run-browser", type=str, default="chromium", help="Browser to use: chromium, firefox, webkit"
+    )
 
 @pytest.fixture(params=get_resolutions(), scope="function")
 def browser_context(request,pytestconfig):
     resolution = request.param
     headless = not pytestconfig.getoption("--run-headed")  # Use --run-headed to override
     slow_mo = pytestconfig.getoption("--slow-mo")
+    browser_name = pytestconfig.getoption("--run-browser")
+
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=headless, slow_mo=slow_mo)
+        browser = getattr(p, browser_name).launch(headless=headless, slow_mo=slow_mo)
         context = browser.new_context(
             viewport=resolution,
             ignore_https_errors=True
@@ -85,4 +90,5 @@ def pytest_configure(config):
         config._metadata['Project Name'] = 'Playwright Hybrid QA Framework'
         config._metadata['Tested By'] = 'QA Automation'
         config._metadata['Base URL'] = load_config().get('base_url', 'N/A')
+
 
