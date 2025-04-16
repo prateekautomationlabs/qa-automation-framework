@@ -10,19 +10,20 @@ class ContactUsPage(BasePage):
     success_msg = ".status.alert-success"
 
     def navigate_to_contact(self):
-        self.page.click(self.contact_btn)
+        """Navigate to the Contact Us page."""
+        self.click(self.contact_btn)
 
     def submit_form(self, name, email, subject, message):
-        self.page.fill(self.name_input, name)
-        self.page.fill(self.email_input, email)
-        self.page.fill(self.subject_input, subject)
-        self.page.fill(self.message_input, message)
-        #self.page.click(self.submit_btn)
-        submit_button = self.page.locator("[name='submit']")
-        submit_button.wait_for(state="visible")
-        submit_button.scroll_into_view_if_needed()
-        submit_button.click()
+        """Fill out and submit the contact form."""
+        self.fill(self.name_input, name)
+        self.fill(self.email_input, email)
+        self.fill(self.subject_input, subject)
+        self.fill(self.message_input, message)
+        self.scroll_into_view(self.submit_btn)
+        self.click(self.submit_btn)
+        # Handle any dialog that appears after submission
         self.page.once("dialog", lambda dialog: dialog.accept())
 
     def is_success_displayed(self):
-        return self.page.is_visible(self.success_msg)
+        """Check if the success message is displayed."""
+        return self.is_visible(self.success_msg)
